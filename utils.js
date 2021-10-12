@@ -8,19 +8,19 @@ const randomIntFromInterval = (min, max) => {
 module.exports = getRandomQuestion = async (difficulty) => {
   switch (difficulty) {
     case 0:
-      maxPage = 3;
+      maxPage = 2;
       difficultyString = "Easy";
       break;
     case 1:
-      maxPage = 6;
+      maxPage = 5;
       difficultyString = "Medium";
       break;
     case 2:
-      maxPage = 3;
+      maxPage = 2;
       difficultyString = "Hard";
       break;
     case 3:
-      maxPage = 1;
+      maxPage = 0;
       difficultyString = "Very Hard";
       break;
   }
@@ -34,7 +34,7 @@ module.exports = getRandomQuestion = async (difficulty) => {
 
   const { data } = await axios.get(
     `https://binarysearch.com/api/questionlist?page=${randomIntFromInterval(
-      1,
+      0,
       maxPage
     )}&difficulty=${difficulty}`
   );

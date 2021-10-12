@@ -19,18 +19,20 @@ client.on("interactionCreate", async (interaction) => {
 
   if (commandName == "ping") {
     await interaction.reply("I'm alive!");
-  } else if (commandName == "questioneasy") {
-    const embeddedQuestion = await getRandomQuestion(0);
-    await interaction.channel.send({ embeds: [embeddedQuestion] });
-  } else if (commandName == "questionmedium") {
-    const embeddedQuestion = await getRandomQuestion(1);
-    await interaction.channel.send({ embeds: [embeddedQuestion] });
-  } else if (commandName == "questionhard") {
-    const embeddedQuestion = await getRandomQuestion(2);
-    await interaction.channel.send({ embeds: [embeddedQuestion] });
-  } else if (commandName == "questionveryhard") {
-    const embeddedQuestion = await getRandomQuestion(3);
-    await interaction.channel.send({ embeds: [embeddedQuestion] });
+  } else if (commandName == "question") {
+    if (interaction.options.getSubcommand() === "easy") {
+      const embeddedQuestion = await getRandomQuestion(0);
+      await interaction.channel.send({ embeds: [embeddedQuestion] });
+    } else if (interaction.options.getSubcommand() === "medium") {
+      const embeddedQuestion = await getRandomQuestion(1);
+      await interaction.channel.send({ embeds: [embeddedQuestion] });
+    } else if (interaction.options.getSubcommand() === "hard") {
+      const embeddedQuestion = await getRandomQuestion(2);
+      await interaction.channel.send({ embeds: [embeddedQuestion] });
+    } else if (interaction.options.getSubcommand() === "veryhard") {
+      const embeddedQuestion = await getRandomQuestion(3);
+      await interaction.channel.send({ embeds: [embeddedQuestion] });
+    }
   }
 });
 
