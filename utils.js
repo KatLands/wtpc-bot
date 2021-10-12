@@ -1,11 +1,14 @@
 const { MessageEmbed } = require("discord.js");
 const axios = require("axios");
 
+// Get a random number between min and max (inclusive)
 const randomIntFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 module.exports = getRandomQuestion = async (difficulty) => {
+  // Set difficultyString for the embed message output
+  // Set maxPage value for fetching questions from API
   switch (difficulty) {
     case 0:
       maxPage = 2;
@@ -32,6 +35,7 @@ module.exports = getRandomQuestion = async (difficulty) => {
     )}&difficulty=${difficulty}`
   );
 
+  // Fetch questions from binarysearch
   const { data } = await axios.get(
     `https://binarysearch.com/api/questionlist?page=${randomIntFromInterval(
       0,
@@ -39,6 +43,7 @@ module.exports = getRandomQuestion = async (difficulty) => {
     )}&difficulty=${difficulty}`
   );
 
+  // Get a random question
   const randomQuestion =
     data.questions[Math.floor(Math.random() * data.questions.length)];
 
