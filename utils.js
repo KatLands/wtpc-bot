@@ -51,8 +51,12 @@ module.exports = getRandomQuestion = async (difficulty) => {
     `https://binarysearch.com/api/questionlist/${randomQuestion.id}`
   );
 
+  console.log(randomQuestionData.id);
+
+  const markdownContent = `${"```md\n" + randomQuestionData.content + "\n```"}`;
+
   const solutionString = randomQuestionData.solutionExplanation
-    ? `\n**Tap to reveal solution**\n\n||${randomQuestionData.solutionExplanation}||`
+    ? `**Tap to reveal solution**\n\n||${randomQuestionData.solutionExplanation}||`
     : "";
 
   const questionEmbed = new MessageEmbed()
