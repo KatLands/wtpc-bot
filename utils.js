@@ -47,12 +47,17 @@ module.exports = getRandomQuestion = async (difficulty) => {
   const randomQuestion =
     data.questions[Math.floor(Math.random() * data.questions.length)];
 
+  const { data: randomQuestionData } = await axios.get(
+    `https://binarysearch.com/api/questionlist/${randomQuestion.id}`
+  );
+
   const questionEmbed = new MessageEmbed()
     .setTitle(randomQuestion.title)
     .setURL(`https://binarysearch.com/problems/${randomQuestion.slug}`)
-    .setDescription(
-      `Binary Search Question #${randomQuestion.id}\nDifficulty: ${difficultyString}\nLink: https://binarysearch.com/problems/${randomQuestion.slug}`
-    )
+    // .setDescription(
+    //   `Binary Search Question #${randomQuestion.id}\nDifficulty: ${difficultyString}\nLink: https://binarysearch.com/problems/${randomQuestion.slug}`
+    // )
+    .setDescription(randomQuestionData.content)
     .setImage("https://i.imgur.com/tgpifKA.png")
     .setTimestamp()
     .setFooter(
