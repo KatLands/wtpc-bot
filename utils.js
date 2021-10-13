@@ -51,13 +51,40 @@ module.exports = getRandomQuestion = async (difficulty) => {
     `https://binarysearch.com/api/questionlist/${randomQuestion.id}`
   );
 
+  console.log(randomQuestionData.id);
+
+  const markdownContent = `${"```md\n" + randomQuestionData.content + "\n```"}`;
+
+  const solutionString = randomQuestionData.solutionExplanation
+    ? `**Tap to reveal solution**\n\n||${randomQuestionData.solutionExplanation}||`
+    : "";
+
   const questionEmbed = new MessageEmbed()
     .setTitle(randomQuestion.title)
     .setURL(`https://binarysearch.com/problems/${randomQuestion.slug}`)
-    // .setDescription(
-    //   `Binary Search Question #${randomQuestion.id}\nDifficulty: ${difficultyString}\nLink: https://binarysearch.com/problems/${randomQuestion.slug}`
-    // )
-    .setDescription(`${difficultyString}\n${randomQuestionData.content}`)
+    .setDescription(
+      `**${difficultyString}**\n\n${randomQuestionData.content}\n\n${solutionString}`
+    )
+    .addFields(
+      {
+        name: "Attempted",
+        value: randomQuestionData.attempted.toString(),
+        inline: true,
+      },
+      {
+        name: "Solved",
+        value: randomQuestionData.solved.toString(),
+        inline: true,
+      },
+      {
+        name: "Rate",
+        value: `${(
+          (randomQuestionData.solved / randomQuestionData.attempted) *
+          100
+        ).toFixed(2)}%`,
+        inline: true,
+      }
+    )
     .setImage("https://i.imgur.com/tgpifKA.png")
     .setTimestamp()
     .setFooter(
