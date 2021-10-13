@@ -2,6 +2,8 @@ const { Client, Intents, MessageEmbed } = require("discord.js");
 const { token, targetChl, guildId } = require("./config.json");
 const CronJob = require("cron").CronJob;
 
+const getRandomQuestion = require("./utils.js");
+
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS],
 });

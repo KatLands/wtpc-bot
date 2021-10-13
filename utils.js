@@ -57,7 +57,7 @@ module.exports = getRandomQuestion = async (difficulty) => {
     // .setDescription(
     //   `Binary Search Question #${randomQuestion.id}\nDifficulty: ${difficultyString}\nLink: https://binarysearch.com/problems/${randomQuestion.slug}`
     // )
-    .setDescription(randomQuestionData.content)
+    .setDescription(`${difficultyString}\n${randomQuestionData.content}`)
     .setImage("https://i.imgur.com/tgpifKA.png")
     .setTimestamp()
     .setFooter(
