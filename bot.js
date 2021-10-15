@@ -25,19 +25,19 @@ client.on('interactionCreate', async (interaction) => {
 	else if (commandName == 'question') {
 		if (interaction.options.getSubcommand() === 'easy') {
 			const embeddedQuestion = await getRandomQuestion(0);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
+			await interaction.reply({ embeds: [embeddedQuestion] });
 		}
 		else if (interaction.options.getSubcommand() === 'medium') {
 			const embeddedQuestion = await getRandomQuestion(1);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
+			await interaction.reply({ embeds: [embeddedQuestion] });
 		}
 		else if (interaction.options.getSubcommand() === 'hard') {
 			const embeddedQuestion = await getRandomQuestion(2);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
+			await interaction.reply({ embeds: [embeddedQuestion] });
 		}
 		else if (interaction.options.getSubcommand() === 'veryhard') {
 			const embeddedQuestion = await getRandomQuestion(3);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
+			await interaction.reply({ embeds: [embeddedQuestion] });
 		}
 	}
 	else if (commandName == 'server') {
