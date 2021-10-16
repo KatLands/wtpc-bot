@@ -10,13 +10,13 @@ const codingQuestionCommand = new SlashCommandBuilder()
         subcommand.setName('easy').setDescription('Get an easy question'),
     )
     .addSubcommand((subcommand) =>
-        subcommand.setName('medium').setDescription('Get an medium question'),
+        subcommand.setName('medium').setDescription('Get a medium question'),
     )
     .addSubcommand((subcommand) =>
-        subcommand.setName('hard').setDescription('Get an hard question'),
+        subcommand.setName('hard').setDescription('Get a hard question'),
     )
     .addSubcommand((subcommand) =>
-        subcommand.setName('veryhard').setDescription('Get an very hard question'),
+        subcommand.setName('veryhard').setDescription('Get a very hard question'),
     );
 
 const commands = [
