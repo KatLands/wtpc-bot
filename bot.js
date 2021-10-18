@@ -1,5 +1,5 @@
 const { Client, Intents, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const { token, targetChannel, guildId, targetMemberOne, targetMemberTwo } = require('./config.json');
+const { token, targetChannel, guildId, targetMemberOne, targetMemberTwo, targetMemberThree } = require('./config.json');
 const CronJob = require('cron').CronJob;
 
 const getRandomQuestion = require('./utils.js');
@@ -27,19 +27,19 @@ client.on('interactionCreate', async (interaction) => {
 	else if (commandName == 'question') {
 		if (interaction.options.getSubcommand() === 'easy') {
 			const embeddedQuestion = await getRandomQuestion(0);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
+			await interaction.reply({ embeds: [embeddedQuestion] });
 		}
 		else if (interaction.options.getSubcommand() === 'medium') {
 			const embeddedQuestion = await getRandomQuestion(1);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
+			await interaction.reply({ embeds: [embeddedQuestion] });
 		}
 		else if (interaction.options.getSubcommand() === 'hard') {
 			const embeddedQuestion = await getRandomQuestion(2);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
+			await interaction.reply({ embeds: [embeddedQuestion] });
 		}
 		else if (interaction.options.getSubcommand() === 'veryhard') {
 			const embeddedQuestion = await getRandomQuestion(3);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
+			await interaction.reply({ embeds: [embeddedQuestion] });
 		}
 	}
 	else if (commandName == 'server') {
@@ -55,7 +55,7 @@ sec(0-59), min(0-59), hour(0-23), day of month(1-31), month(1-12), day of week(0
 
 
 // rsvp day before meeting message
-const dayBeforeReminder = new CronJob('58 18 * * 5', function() {
+const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
 	const row = new MessageActionRow()
 		.addComponents(
 			new MessageButton()
@@ -89,8 +89,6 @@ client.on('interactionCreate', interaction => {
 		}
 		else {
 			rsvpArray.push(interaction.member.displayName);
-			client.channels.cache.get(targetChannel,
-			).send('Current attendees:\n- ' + rsvpArray.join('\n - '));
 			return interaction.deferUpdate();
 		}
 	}
@@ -98,11 +96,14 @@ client.on('interactionCreate', interaction => {
 
 // client.cache.get(targetMemberOne).send('RSVP List: ' + rsvpArray);
 // sending DM with RSVP list
-const sendRSVPArray = new CronJob('1 16 * * 5', function() {
+const sendRSVPArray = new CronJob('1 15 * * 5', function() {
 	client.users.fetch(targetMemberOne, false).then((user) => {
 		user.send('RSVP List:\n- ' + rsvpArray.join('\n - '));
 	});
 	client.users.fetch(targetMemberTwo, false).then((user) => {
+		user.send('RSVP List:\n- ' + rsvpArray.join('\n - '));
+	});
+	client.users.fetch(targetMemberThree, false).then((user) => {
 		user.send('RSVP List:\n- ' + rsvpArray.join('\n - '));
 	});
 });
@@ -123,12 +124,12 @@ const meetingStart = new CronJob('58 18 * * 5', function() {
 
 
 // purging rsvp array
-const purgeRsvpList = new CronJob('1 12 * * 6', function() {
+const purgeRsvpList = new CronJob('1 21 * * 5', function() {
 	rsvpArray.length = 0;
+	/*
 	client.channels.cache.get(targetChannel,
-	).send('List purged');
-	client.channels.cache.get(targetChannel,
-	).send('Should show empty array: ' + rsvpArray);
+	).send('List purged. Should show empty array: ' + rsvpArray);
+	*/
 });
 
 
