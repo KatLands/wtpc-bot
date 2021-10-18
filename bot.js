@@ -1,5 +1,5 @@
 const { Client, Intents, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const { token, targetChannel, guildId, targetMemberOne, targetMemberTwo, targetMemberThree } = require('./config.json');
+const { token, targetChannel, guildId, targetMemberOne, targetMemberTwo, targetMemberThree, meetingDay, meetingTime } = require('./config.json');
 const CronJob = require('cron').CronJob;
 
 const getRandomQuestion = require('./utils.js');
@@ -89,6 +89,7 @@ client.on('interactionCreate', interaction => {
 		}
 		else {
 			rsvpArray.push(interaction.member.displayName);
+			client.channels.cache.get(targetChannel).send(`Thank you for confirming ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
 			return interaction.deferUpdate();
 		}
 	}
