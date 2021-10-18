@@ -1,5 +1,5 @@
 const { Client, Intents, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const { token, targetChannel, guildId, targetMemberOne, targetMemberTwo } = require('./config.json');
+const { token, targetChannel, guildId, targetMemberOne, targetMemberTwo, targetMemberThree, meetingDay, meetingTime } = require('./config.json');
 const CronJob = require('cron').CronJob;
 
 const getRandomQuestion = require('./features/getRandomQuestion.js');
@@ -41,7 +41,7 @@ sec(0-59), min(0-59), hour(0-23), day of month(1-31), month(1-12), day of week(0
 
 
 // rsvp day before meeting message
-const dayBeforeReminder = new CronJob('58 18 * * 5', function() {
+const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
@@ -75,8 +75,7 @@ client.on('interactionCreate', interaction => {
         }
         else {
             rsvpArray.push(interaction.member.displayName);
-            client.channels.cache.get(targetChannel,
-            ).send('Current attendees:\n- ' + rsvpArray.join('\n - '));
+            client.channels.cache.get(targetChannel).send(`Thank you for confirming ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
             return interaction.deferUpdate();
         }
     }
@@ -84,11 +83,14 @@ client.on('interactionCreate', interaction => {
 
 // client.cache.get(targetMemberOne).send('RSVP List: ' + rsvpArray);
 // sending DM with RSVP list
-const sendRSVPArray = new CronJob('1 16 * * 5', function() {
+const sendRSVPArray = new CronJob('1 15 * * 5', function() {
     client.users.fetch(targetMemberOne, false).then((user) => {
         user.send('RSVP List:\n- ' + rsvpArray.join('\n - '));
     });
     client.users.fetch(targetMemberTwo, false).then((user) => {
+        user.send('RSVP List:\n- ' + rsvpArray.join('\n - '));
+    });
+    client.users.fetch(targetMemberThree, false).then((user) => {
         user.send('RSVP List:\n- ' + rsvpArray.join('\n - '));
     });
 });
@@ -109,12 +111,12 @@ const meetingStart = new CronJob('58 18 * * 5', function() {
 
 
 // purging rsvp array
-const purgeRsvpList = new CronJob('1 12 * * 6', function() {
+const purgeRsvpList = new CronJob('1 21 * * 5', function() {
     rsvpArray.length = 0;
-    client.channels.cache.get(targetChannel,
-    ).send('List purged');
-    client.channels.cache.get(targetChannel,
-    ).send('Should show empty array: ' + rsvpArray);
+    /*
+	client.channels.cache.get(targetChannel,
+	).send('List purged. Should show empty array: ' + rsvpArray);
+	*/
 });
 
 
