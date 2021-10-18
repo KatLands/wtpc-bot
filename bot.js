@@ -2,7 +2,7 @@ const { Client, Intents, MessageEmbed, MessageButton, MessageActionRow } = requi
 const { token, targetChannel, guildId, targetMemberOne, targetMemberTwo } = require('./config.json');
 const CronJob = require('cron').CronJob;
 
-const getRandomQuestion = require('./utils.js');
+const getRandomQuestion = require('./features/getRandomQuestion.js');
 
 const client = new Client({
 	intents: [Intents.FLAGS.GUILDS],
@@ -17,7 +17,7 @@ client.on('ready', () => {
 client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isCommand()) return;
 
-	const { commandName } = interaction;
+	const { commandName, options } = interaction;
 	const guild = client.guilds.cache.get(guildId);
 	const memberCount = guild.memberCount;
 
@@ -25,22 +25,8 @@ client.on('interactionCreate', async (interaction) => {
 		await interaction.reply({ content: 'I\'m alive!' });
 	}
 	else if (commandName == 'question') {
-		if (interaction.options.getSubcommand() === 'easy') {
-			const embeddedQuestion = await getRandomQuestion(0);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
-		}
-		else if (interaction.options.getSubcommand() === 'medium') {
-			const embeddedQuestion = await getRandomQuestion(1);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
-		}
-		else if (interaction.options.getSubcommand() === 'hard') {
-			const embeddedQuestion = await getRandomQuestion(2);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
-		}
-		else if (interaction.options.getSubcommand() === 'veryhard') {
-			const embeddedQuestion = await getRandomQuestion(3);
-			await interaction.channel.send({ embeds: [embeddedQuestion] });
-		}
+		const questionEmbed = await getRandomQuestion(options.getSubcommand());
+		await interaction.reply({ embeds: [questionEmbed] });
 	}
 	else if (commandName == 'server') {
 		await interaction.reply(`WTPC Current Member Count: ${memberCount}`);

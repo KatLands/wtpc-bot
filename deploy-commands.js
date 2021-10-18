@@ -16,7 +16,7 @@ const codingQuestionCommand = new SlashCommandBuilder()
 		subcommand.setName('hard').setDescription('Get an hard question'),
 	)
 	.addSubcommand((subcommand) =>
-		subcommand.setName('veryhard').setDescription('Get an very hard question'),
+		subcommand.setName('harder').setDescription('Get an harder question'),
 	);
 
 const commands = [

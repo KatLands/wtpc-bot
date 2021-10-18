@@ -1,9 +1,7 @@
 ## Wake Tech Programming Club Bot
 
--Manages server for the club with scheduled reminder messages for meetings. 
+-Manages server for the club with scheduled reminder messages for meetings.
 -Ability to get coding questions of varying difficulty via binarysearch.
-
-
 
 ## Commands
 
@@ -12,5 +10,4 @@
 - `/question easy`: Returns question from binary search with easy difficulty
 - `/question medium`: Returns question from binary search with medium difficulty
 - `/question hard`: Returns question from binary search with hard difficulty
-- `/question veryhard`: Returns question from binary search with very hard difficulty
-
+- `/question harder`: Returns question from binary search with harder difficulty
