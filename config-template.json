@@ -1,11 +1,11 @@
 {
-    "clientId": "client ID(bot application ID)",
-	"guildId": "guild ID here",
-    "token": "bot token here",
-    "targetChannel": "target channel ID where scheduled messages deploy",
-    "targetMemberOne": "meeting moderator user ID",
-    "targetMemberTwo": "meeting moderator user ID",
-    "targetMemberThree": "meeting moderator user ID",
-    "meetingDay": "meeting day here",
-    "meetingTime": "meeting time here"
+  "clientId": "client ID(bot application ID)",
+  "guildId": "guild ID here",
+  "token": "bot token here",
+  "targetChannel": "target channel ID where scheduled messages deploy",
+  "targetMemberOne": "meeting moderator user ID",
+  "targetMemberTwo": "meeting moderator user ID",
+  "targetMemberThree": "meeting moderator user ID",
+  "meetingDay": "meeting day here",
+  "meetingTime": "meeting time here"
 }
