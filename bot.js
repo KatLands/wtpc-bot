@@ -1,12 +1,19 @@
-const { Client, Intents, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const { token, targetChannel, guildId, targetMemberOne, targetMemberTwo, targetMemberThree, meetingDay, meetingTime } = require('./config.json');
+const fs = require('fs');
+const { Client, Collection, Intents, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { token, targetChannel, targetMemberOne, targetMemberTwo, targetMemberThree, meetingDay, meetingTime } = require('./config.json');
 const CronJob = require('cron').CronJob;
-
-const getRandomQuestion = require('./features/getRandomQuestion.js');
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS],
 });
+
+client.commands = new Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.data.name, command);
+}
 
 client.on('ready', () => {
     console.log(`Logged in: ${client.user.tag}`);
@@ -17,25 +24,16 @@ client.on('ready', () => {
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return;
 
-    const { commandName, options } = interaction;
-    const guild = client.guilds.cache.get(guildId);
-    const memberCount = guild.memberCount;
+    const command = client.commands.get(interaction.commandName);
 
-    if (commandName == 'ping') {
-        await interaction.reply({ content: 'I\'m alive!' });
+    if (!command) return;
+
+    try {
+        await command.execute(interaction);
     }
-    else if (commandName == 'question') {
-        try {
-            const questionEmbed = await getRandomQuestion(options.getSubcommand());
-            await interaction.reply({ embeds: [questionEmbed] });
-        }
-        catch (error) {
-            console.log(error);
-            interaction.reply('Something went wrong. Please run the command again!');
-        }
-    }
-    else if (commandName == 'server') {
-        await interaction.reply(`WTPC Current Member Count: ${memberCount}`);
+    catch (error) {
+        console.error(error);
+        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     }
 });
 

@@ -1,4 +1,5 @@
-const { MessageEmbed } = require('discord.js'),
+const { SlashCommandBuilder } = require('@discordjs/builders'),
+    { MessageEmbed } = require('discord.js'),
     axios = require('axios'),
     randInt = require('../utilities/randInt.js');
 
@@ -77,4 +78,25 @@ const getRandomQuestion = async (difficulty) => {
 
     return questionEmbed;
 };
-module.exports = getRandomQuestion;
+
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('question')
+        .setDescription('Get a randomized coding question based on difficulty')
+        .addSubcommand((subcommand) =>
+            subcommand.setName('easy').setDescription('Get an easy question'),
+        )
+        .addSubcommand((subcommand) =>
+            subcommand.setName('medium').setDescription('Get a medium question'),
+        )
+        .addSubcommand((subcommand) =>
+            subcommand.setName('hard').setDescription('Get a hard question'),
+        )
+        .addSubcommand((subcommand) =>
+            subcommand.setName('harder').setDescription('Get a harder question'),
+        ),
+    async execute(interaction) {
+        const questionEmbed = await getRandomQuestion(interaction.options.getSubcommand());
+        await interaction.reply({ embeds: [questionEmbed] });
+    },
+};
