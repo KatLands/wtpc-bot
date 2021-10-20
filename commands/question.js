@@ -95,6 +95,7 @@ module.exports = {
         .addSubcommand((subcommand) =>
             subcommand.setName('harder').setDescription('Get a harder question'),
         ),
+
     async execute(interaction) {
         const questionEmbed = await getRandomQuestion(interaction.options.getSubcommand());
         await interaction.reply({ embeds: [questionEmbed] });
