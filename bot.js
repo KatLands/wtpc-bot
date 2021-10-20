@@ -1,12 +1,19 @@
 const fs = require('fs');
 const { Client, Collection, Intents, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const { token, targetChannel, targetMemberOne, targetMemberTwo, targetMemberThree, meetingDay, meetingTime } = require('./config.json');
+const { token, targetChannel, targetMemberOne, targetMemberTwo, targetMemberThree } = require('./config.json');
 const CronJob = require('cron').CronJob;
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS],
 });
 
+
+client.on('ready', () => {
+    console.log(`Logged in: ${client.user.tag}`);
+});
+
+
+// Slash commands
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -15,12 +22,6 @@ for (const file of commandFiles) {
     client.commands.set(command.data.name, command);
 }
 
-client.on('ready', () => {
-    console.log(`Logged in: ${client.user.tag}`);
-});
-
-
-// slash commands
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return;
 
@@ -69,21 +70,26 @@ const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
 
 });
 
+// Button custom IDS
+client.buttons = new Collection();
+const buttonFiles = fs.readdirSync('./buttons').filter(file => file.endsWith('.js'));
 
-// tracking rsvp button clicks
-const rsvpArray = [];
+for (const file of buttonFiles) {
+    const button = require(`./buttons/${file}`);
+    client.buttons.set(button.name, button);
+}
+
 client.on('interactionCreate', interaction => {
-    if (interaction.isButton()) {
-        if (rsvpArray.includes(interaction.member.displayName)) {
-            return;
-        }
-        else {
-            rsvpArray.push(interaction.member.displayName);
-            client.channels.cache.get(targetChannel).send(`Thank you for confirming ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
-            return interaction.deferUpdate();
-        }
-    }
+    if (!interaction.isButton()) return;
+
+    const button = client.buttons.get(interaction.customId);
+
+    if (!button) return;
+
+    button.execute(interaction);
 });
+
+const { rsvpArray } = require('./buttons/rsvp.js');
 
 // client.cache.get(targetMemberOne).send('RSVP List: ' + rsvpArray);
 // sending DM with RSVP list
