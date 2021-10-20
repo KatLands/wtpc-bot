@@ -25,8 +25,14 @@ client.on('interactionCreate', async (interaction) => {
         await interaction.reply({ content: 'I\'m alive!' });
     }
     else if (commandName == 'question') {
-        const questionEmbed = await getRandomQuestion(options.getSubcommand());
-        await interaction.reply({ embeds: [questionEmbed] });
+        try {
+            const questionEmbed = await getRandomQuestion(options.getSubcommand());
+            await interaction.reply({ embeds: [questionEmbed] });
+        }
+        catch (error) {
+            console.log(error);
+            interaction.reply('Something went wrong. Please run the command again!');
+        }
     }
     else if (commandName == 'server') {
         await interaction.reply(`WTPC Current Member Count: ${memberCount}`);
