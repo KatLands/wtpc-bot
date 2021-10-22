@@ -16,9 +16,8 @@ client.on('ready', () => {
 // slash commands
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return;
-
-    const { commandName, options } = interaction;
     const guild = client.guilds.cache.get(guildId);
+    const { commandName, options } = interaction;
     const memberCount = guild.memberCount;
 
     if (commandName == 'ping') {
@@ -45,10 +44,15 @@ const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId('rsvp')
-                .setLabel('RSVP')
+                .setCustomId('accept')
+                .setLabel('Accept')
                 .setStyle('SUCCESS'),
+            new MessageButton()
+                .setCustomId('decline')
+                .setLabel('Decline')
+                .setStyle('DANGER'),
         );
+
 
     const dayBeforeMsg = new MessageEmbed()
         .setColor('#0080ff')
@@ -70,12 +74,26 @@ const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
 const rsvpArray = [];
 client.on('interactionCreate', interaction => {
     if (interaction.isButton()) {
-        if (rsvpArray.includes(interaction.member.displayName)) {
-            return;
+        if (interaction.customId == 'accept') {
+            if (rsvpArray.includes(interaction.member.displayName)) {
+                client.channels.cache.get(targetChannel).send(`You have already confirmed ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
+                return interaction.deferUpdate();
+            }
+            else {
+                rsvpArray.push(interaction.member.displayName);
+                client.channels.cache.get(targetChannel).send(`Thank you for confirming ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
+                return interaction.deferUpdate();
+            }
         }
-        else {
-            rsvpArray.push(interaction.member.displayName);
-            client.channels.cache.get(targetChannel).send(`Thank you for confirming ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
+        else if (interaction.customId == 'decline') {
+            for (let i = 0; i < rsvpArray.length; i++) {
+                if (rsvpArray[i] == (interaction.member.displayName)) {
+                    rsvpArray.splice(i, 1);
+                    client.channels.cache.get(targetChannel).send(`You have been removed from the RSVP list ${interaction.member.displayName}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
+                    return interaction.deferUpdate();
+                }
+            }
+            client.channels.cache.get(targetChannel).send(`You were not on the RSVP list ${interaction.member.displayName}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
             return interaction.deferUpdate();
         }
     }
@@ -113,10 +131,6 @@ const meetingStart = new CronJob('58 18 * * 5', function() {
 // purging rsvp array
 const purgeRsvpList = new CronJob('1 21 * * 5', function() {
     rsvpArray.length = 0;
-    /*
-	client.channels.cache.get(targetChannel,
-	).send('List purged. Should show empty array: ' + rsvpArray);
-	*/
 });
 
 
