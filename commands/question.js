@@ -21,7 +21,7 @@ const getRandomQuestion = async (difficulty) => {
     let testcasesString = '';
     for (let i = 0; i < testcases.length; i++) {
         testcasesString += `\n**Example ${i + 1}**`;
-        testcasesString += '\n`Input` ```';
+        testcasesString += '\n```Input: ';
 
         for (let j = 0; j < testcases[i].input.length; j++) {
             testcasesString += j === testcases[i].input.length - 1 ? `${inputParameters[j]} = ` + JSON.stringify(testcases[i].input[j]) : `${inputParameters[j]} = ` + JSON.stringify(testcases[i].input[j]) + ', ';
@@ -29,18 +29,18 @@ const getRandomQuestion = async (difficulty) => {
 
         testcasesString += ' ```';
 
-        testcasesString += '\n`Output` ';
+        testcasesString += ' ```Output: ';
 
         if (!testcases[i].expectedOutput.isArray) {
-            testcasesString += '```' + JSON.stringify(testcases[i].expectedOutput) + ' ```';
+            testcasesString += JSON.stringify(testcases[i].expectedOutput) + ' ```';
         }
         else {
             for (let j = 0; j < testcases[i].expectedOutput.length; j++) {
-                testcasesString += j === testcases[i].expectedOutput.length - 1 ? '```' + JSON.stringify(testcases[i].expectedOutput[j]) + ' ```' : '```' + JSON.stringify(testcases[i].expectedOutput[j]) + ' ```';
+                testcasesString += j === testcases[i].expectedOutput.length - 1 ? JSON.stringify(testcases[i].expectedOutput[j]) + ' ```' : '```' + JSON.stringify(testcases[i].expectedOutput[j]) + ' ```';
             }
         }
 
-        testcasesString += testcases[i].explanation && '\n`Explanation` \n' + testcases[i].explanation ;
+        testcasesString += testcases[i].explanation && '\nExplanation: \n' + testcases[i].explanation ;
         testcasesString += i !== testcases.length - 1 && '\n';
     }
     testcasesString = testcasesString && '\n' + testcasesString;
@@ -75,6 +75,8 @@ const getRandomQuestion = async (difficulty) => {
         )
         .setThumbnail('https://i.imgur.com/tgpifKA.png')
         .setTimestamp();
+
+    console.log(testcasesString);
 
     return questionEmbed;
 };

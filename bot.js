@@ -1,26 +1,24 @@
 const fs = require('fs');
 const { Client, Collection, Intents, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const { token, targetChannel, targetMemberOne, targetMemberTwo, targetMemberThree } = require('./config.json');
+const { token, targetChannel, targetMemberOne, targetMemberTwo, targetMemberThree, meetingDay, meetingTime } = require('./config.json');
+const sendTempMessage = require('./utilities/sendTempMessage.js');
 const CronJob = require('cron').CronJob;
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS],
 });
 
-
-client.on('ready', () => {
-    console.log(`Logged in: ${client.user.tag}`);
-});
-
-
 // Slash commands
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.data.name, command);
 }
+
+client.on('ready', () => {
+    console.log(`Logged in: ${client.user.tag}`);
+});
 
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return;
@@ -38,7 +36,6 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 
-
 /*
 cron job format =  '* * * * * *'
 sec(0-59), min(0-59), hour(0-23), day of month(1-31), month(1-12), day of week(0-6 starting with sunday)
@@ -46,20 +43,25 @@ sec(0-59), min(0-59), hour(0-23), day of month(1-31), month(1-12), day of week(0
 
 
 // rsvp day before meeting message
-const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
+const dayBeforeReminder = new CronJob('20 20 * * 6', function() {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId('rsvp')
-                .setLabel('RSVP')
+                .setCustomId('accept')
+                .setLabel('Accept')
                 .setStyle('SUCCESS'),
+            new MessageButton()
+                .setCustomId('decline')
+                .setLabel('Decline')
+                .setStyle('DANGER'),
         );
+
 
     const dayBeforeMsg = new MessageEmbed()
         .setColor('#0080ff')
         .addFields({
             name: 'Meeting this Friday at 7pm',
-            value: 'Click button below to RSVP',
+            value: 'Click the accept button to RSVP or use the decline button to remove yourself from the list.',
         })
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
@@ -70,26 +72,34 @@ const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
 
 });
 
-// Button custom IDS
-client.buttons = new Collection();
-const buttonFiles = fs.readdirSync('./buttons').filter(file => file.endsWith('.js'));
-
-for (const file of buttonFiles) {
-    const button = require(`./buttons/${file}`);
-    client.buttons.set(button.name, button);
-}
-
-client.on('interactionCreate', interaction => {
+// tracking rsvp button clicks
+const rsvpArray = [];
+client.on('interactionCreate', async (interaction) => {
     if (!interaction.isButton()) return;
 
-    const button = client.buttons.get(interaction.customId);
+    const { displayName } = interaction.member;
 
-    if (!button) return;
-
-    button.execute(interaction);
+    if (interaction.customId === 'accept') {
+        if (rsvpArray.includes(displayName)) {
+            sendTempMessage(interaction, `You have already confirmed ${displayName}! See you ${meetingDay} at ${meetingTime}.`);
+            return interaction.deferUpdate();
+        }
+        rsvpArray.push(displayName);
+        sendTempMessage(interaction, `Thank you for confirming ${displayName}! See you ${meetingDay} at ${meetingTime}.`);
+        return interaction.deferUpdate();
+    }
+    else if (interaction.customId === 'decline') {
+        for (let i = 0; i < rsvpArray.length; i++) {
+            if (rsvpArray[i] === displayName) {
+                rsvpArray.splice(i, 1);
+                sendTempMessage(interaction, `You have been removed from the RSVP list ${displayName}.`);
+                return interaction.deferUpdate();
+            }
+        }
+        sendTempMessage(interaction, `You were not on the RSVP list ${displayName}.`);
+        return interaction.deferUpdate();
+    }
 });
-
-const { rsvpArray } = require('./buttons/rsvp.js');
 
 // client.cache.get(targetMemberOne).send('RSVP List: ' + rsvpArray);
 // sending DM with RSVP list
