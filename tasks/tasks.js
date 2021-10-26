@@ -39,15 +39,15 @@ const dayBeforeReminder = (client) => new CronJob('1 15 * * 5', function() {
 });
 
 // Sending DM with RSVP list
-const sendRSVPArray = (client, rsvpArray) => new CronJob('1 15 * * 5', function() {
+const sendRSVPArray = (client, RSVPArray) => new CronJob('1 15 * * 5', function() {
     client.users.fetch(targetMemberOne, false).then((user) => {
-        user.send('RSVP List:\n- ' + rsvpArray.join('\n - '));
+        user.send('RSVP List:\n- ' + RSVPArray.join('\n - '));
     });
     client.users.fetch(targetMemberTwo, false).then((user) => {
-        user.send('RSVP List:\n- ' + rsvpArray.join('\n - '));
+        user.send('RSVP List:\n- ' + RSVPArray.join('\n - '));
     });
     client.users.fetch(targetMemberThree, false).then((user) => {
-        user.send('RSVP List:\n- ' + rsvpArray.join('\n - '));
+        user.send('RSVP List:\n- ' + RSVPArray.join('\n - '));
     });
 });
 
@@ -66,12 +66,12 @@ const meetingStart = (client) => new CronJob('58 18 * * 5', function() {
 });
 
 
-// Purging rsvp array
-const purgeRsvpList = (rsvpArray) => new CronJob('1 21 * * 5', function() {
-    rsvpArray.length = 0;
+// Purging RSVP array
+const purgeRSVPList = (RSVPArray) => new CronJob('1 21 * * 5', function() {
+    RSVPArray.length = 0;
     /*
 	client.channels.cache.get(targetChannel,
-	).send('List purged. Should show empty array: ' + rsvpArray);
+	).send('List purged. Should show empty array: ' + RSVPArray);
 	*/
 });
 
@@ -79,5 +79,5 @@ module.exports = {
     dayBeforeReminder,
     sendRSVPArray,
     meetingStart,
-    purgeRsvpList,
+    purgeRSVPList,
 };
