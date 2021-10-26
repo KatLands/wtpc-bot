@@ -73,7 +73,7 @@ const getRandomQuestion = async (difficulty) => {
             { name: 'Attempted', value: attempted.toString(), inline: true },
             { name: 'Rate', value: `${((solved / attempted) * 100).toFixed(2)}%`, inline: true },
         )
-        .setThumbnail('https://i.imgur.com/tgpifKA.png')
+        .setThumbnail('https://cdn.discordapp.com/attachments/832851230383800330/902397037633495090/binarySearch.png')
         .setTimestamp();
 
     console.log(testcasesString);

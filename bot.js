@@ -37,7 +37,6 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 
-
 // Tracking RSVP button clicks
 const rsvpArray = [];
 
