@@ -59,7 +59,7 @@ const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
         .setTitle('Meeting this Friday at 7pm')
         .addFields({
             name: '\u200B',
-            value: 'Click the accept button to RSVP or use the decline \n button to remove yourself from the list.',
+            value: 'Click the accept button to RSVP or use the\ndecline button to remove yourself from the list.',
         })
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
