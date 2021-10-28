@@ -1,7 +1,7 @@
 const { Client, Collection, Intents } = require('discord.js'),
     fs = require('fs'),
     { token } = require('./config.json'),
-    { dayBeforeReminder, sendRSVPArray, meetingStart, purgeRSVPList } = require('./tasks/tasks.js');
+    { dayBeforeReminder, meetingStart, purgeRSVPList } = require('./tasks/tasks.js');
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS],
@@ -42,28 +42,29 @@ const RSVPArray = new Set();
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isButton()) return;
 
-    const { displayName } = interaction.member;
+    const { message, member } = interaction;
 
-    if (interaction.customId === 'accept') {
-        interaction.message.embeds[0].fields = [];
-        RSVPArray.add(displayName);
-        interaction.message.embeds[0].addFields({ name: `Current attendees: ${RSVPArray.size}`, value: RSVPArray.size ? 'RSVP List:\n- ' + [...RSVPArray].join('\n - ') : ':smiling_face_with_tear:' });
-        interaction.message.edit({ embeds: [interaction.message.embeds[0]], components: [interaction.message.components[0]] });
+    if (interaction.customId === 'add') {
+        RSVPArray.add(member.displayName);
+        message.embeds[0].description = 'Click buttons below to add / remove yourself from RSVP list\n\n';
+        message.embeds[0].description += `**Current attendees: ${RSVPArray.size}**\n`;
+        message.embeds[0].description += RSVPArray.size ? '- ' + [...RSVPArray].join('\n - ') : ':smiling_face_with_tear:';
+        message.edit({ embeds: [message.embeds[0]], components: [message.components[0]] });
         return interaction.deferUpdate();
     }
-    else if (interaction.customId === 'decline') {
-        interaction.message.embeds[0].fields = [];
-        RSVPArray.delete(displayName);
-        interaction.message.embeds[0].addFields({ name: `Current attendees: ${RSVPArray.size}`, value: RSVPArray.size ? 'RSVP List:\n- ' + [...RSVPArray].join('\n - ') : ':smiling_face_with_tear:' });
-        interaction.message.edit({ embeds: [interaction.message.embeds[0]], components: [interaction.message.components[0]] });
+    else if (interaction.customId === 'remove') {
+        RSVPArray.delete(member.displayName);
+        message.embeds[0].description = 'Click buttons below to add / remove yourself from RSVP list\n\n';
+        message.embeds[0].description += `**Current attendees: ${RSVPArray.size}**\n`;
+        message.embeds[0].description += RSVPArray.size ? '- ' + [...RSVPArray].join('\n - ') : ':smiling_face_with_tear:';
+        message.edit({ embeds: [message.embeds[0]], components: [message.components[0]] });
         return interaction.deferUpdate();
     }
 });
 
-client.login(token);
-
 // Start cron tasks
 dayBeforeReminder(client).start();
-sendRSVPArray(client, RSVPArray).start();
 meetingStart(client).start();
 purgeRSVPList(RSVPArray).start();
+
+client.login(token);
