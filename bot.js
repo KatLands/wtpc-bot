@@ -1,8 +1,7 @@
 const { Client, Collection, Intents } = require('discord.js'),
     fs = require('fs'),
-    { token, meetingDay, meetingTime } = require('./config.json'),
-    { dayBeforeReminder, sendRSVPArray, meetingStart, purgeRSVPList } = require('./tasks/tasks.js'),
-    sendTempMessage = require('./utilities/sendTempMessage.js');
+    { token } = require('./config.json'),
+    { dayBeforeReminder, sendRSVPArray, meetingStart, purgeRSVPList } = require('./tasks/tasks.js');
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS],
@@ -38,7 +37,7 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 // Tracking RSVP button clicks
-const RSVPArray = [];
+const RSVPArray = new Set();
 
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isButton()) return;
@@ -46,31 +45,25 @@ client.on('interactionCreate', async (interaction) => {
     const { displayName } = interaction.member;
 
     if (interaction.customId === 'accept') {
-        if (RSVPArray.includes(displayName)) {
-            sendTempMessage(interaction, `You have already confirmed ${displayName}! See you ${meetingDay} at ${meetingTime}.`);
-            return interaction.deferUpdate();
-        }
-        RSVPArray.push(displayName);
-        sendTempMessage(interaction, `Thank you for confirming ${displayName}! See you ${meetingDay} at ${meetingTime}.`);
+        interaction.message.embeds[0].fields = [];
+        RSVPArray.add(displayName);
+        interaction.message.embeds[0].addFields({ name: `Current attendees: ${RSVPArray.size}`, value: RSVPArray.size ? 'RSVP List:\n- ' + [...RSVPArray].join('\n - ') : ':smiling_face_with_tear:' });
+        interaction.message.edit({ embeds: [interaction.message.embeds[0]], components: [interaction.message.components[0]] });
         return interaction.deferUpdate();
     }
     else if (interaction.customId === 'decline') {
-        for (let i = 0; i < RSVPArray.length; i++) {
-            if (RSVPArray[i] === displayName) {
-                RSVPArray.splice(i, 1);
-                sendTempMessage(interaction, `You have been removed from the RSVP list ${displayName}.`);
-                return interaction.deferUpdate();
-            }
-        }
-        sendTempMessage(interaction, `You were not on the RSVP list ${displayName}.`);
+        interaction.message.embeds[0].fields = [];
+        RSVPArray.delete(displayName);
+        interaction.message.embeds[0].addFields({ name: `Current attendees: ${RSVPArray.size}`, value: RSVPArray.size ? 'RSVP List:\n- ' + [...RSVPArray].join('\n - ') : ':smiling_face_with_tear:' });
+        interaction.message.edit({ embeds: [interaction.message.embeds[0]], components: [interaction.message.components[0]] });
         return interaction.deferUpdate();
     }
 });
+
+client.login(token);
 
 // Start cron tasks
 dayBeforeReminder(client).start();
 sendRSVPArray(client, RSVPArray).start();
 meetingStart(client).start();
 purgeRSVPList(RSVPArray).start();
-
-client.login(token);

@@ -25,10 +25,8 @@ const dayBeforeReminder = (client) => new CronJob('1 15 * * 5', function() {
 
     const dayBeforeMsg = new MessageEmbed()
         .setColor('#0080ff')
-        .addFields({
-            name: 'Meeting this Friday at 7pm',
-            value: 'Click the accept button to RSVP or use the decline button to remove yourself from the list.',
-        })
+        .setTitle('Meeting this Friday at 7pm')
+        .setDescription('Click the accept button to RSVP or use the decline button to remove yourself from the list.')
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
         );
@@ -41,13 +39,13 @@ const dayBeforeReminder = (client) => new CronJob('1 15 * * 5', function() {
 // Sending DM with RSVP list
 const sendRSVPArray = (client, RSVPArray) => new CronJob('1 15 * * 5', function() {
     client.users.fetch(targetMemberOne, false).then((user) => {
-        user.send('RSVP List:\n- ' + RSVPArray.join('\n - '));
+        user.send('RSVP List:\n- ' + [...RSVPArray].join('\n - '));
     });
     client.users.fetch(targetMemberTwo, false).then((user) => {
-        user.send('RSVP List:\n- ' + RSVPArray.join('\n - '));
+        user.send('RSVP List:\n- ' + [...RSVPArray].join('\n - '));
     });
     client.users.fetch(targetMemberThree, false).then((user) => {
-        user.send('RSVP List:\n- ' + RSVPArray.join('\n - '));
+        user.send('RSVP List:\n- ' + [...RSVPArray].join('\n - '));
     });
 });
 
@@ -68,7 +66,7 @@ const meetingStart = (client) => new CronJob('58 18 * * 5', function() {
 
 // Purging RSVP array
 const purgeRSVPList = (RSVPArray) => new CronJob('1 21 * * 5', function() {
-    RSVPArray.length = 0;
+    RSVPArray.clear();
     /*
 	client.channels.cache.get(targetChannel,
 	).send('List purged. Should show empty array: ' + RSVPArray);
