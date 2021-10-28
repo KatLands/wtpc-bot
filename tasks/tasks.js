@@ -41,7 +41,8 @@ const dayBeforeReminder = (client) => new CronJob('1 12 * * 4', function() {
 const meetingStart = (client) => new CronJob('58 18 * * 5', function() {
     const mtgStartMsg = new MessageEmbed()
         .setColor('#0080ff')
-        .addFields({ name: 'Club meeting starting now', value: 'Join general chat' })
+        .setTitle('Club meeting starting now')
+        .setDescription('Join General Voice Chat')
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
         );
@@ -54,6 +55,7 @@ const meetingStart = (client) => new CronJob('58 18 * * 5', function() {
 // Purging RSVP array
 const purgeRSVPList = (RSVPArray) => new CronJob('1 21 * * 5', function() {
     RSVPArray.clear();
+    console.log(RSVPArray);
 });
 
 module.exports = {
