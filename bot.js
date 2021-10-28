@@ -56,9 +56,10 @@ const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
 
     const dayBeforeMsg = new MessageEmbed()
         .setColor('#0080ff')
+        .setTitle('Meeting this Friday at 7pm')
         .addFields({
-            name: 'Meeting this Friday at 7pm',
-            value: 'Click the accept button to RSVP or use the decline button to remove yourself from the list.',
+            name: '\u200B',
+            value: 'Click the accept button to RSVP or use the decline \n button to remove yourself from the list.',
         })
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
@@ -76,12 +77,12 @@ client.on('interactionCreate', interaction => {
     if (interaction.isButton()) {
         if (interaction.customId == 'accept') {
             if (rsvpArray.includes(interaction.member.displayName)) {
-                client.channels.cache.get(targetChannel).send(`You have already confirmed ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
+                client.channels.cache.get(targetChannel).send(`You have already confirmed ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.\nThis message will automatically delete.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
                 return interaction.deferUpdate();
             }
             else {
                 rsvpArray.push(interaction.member.displayName);
-                client.channels.cache.get(targetChannel).send(`Thank you for confirming ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
+                client.channels.cache.get(targetChannel).send(`Thank you for confirming ${interaction.member.displayName}! See you ${meetingDay} at ${meetingTime}.\nThis message will automatically delete.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
                 return interaction.deferUpdate();
             }
         }
@@ -89,11 +90,11 @@ client.on('interactionCreate', interaction => {
             for (let i = 0; i < rsvpArray.length; i++) {
                 if (rsvpArray[i] == (interaction.member.displayName)) {
                     rsvpArray.splice(i, 1);
-                    client.channels.cache.get(targetChannel).send(`You have been removed from the RSVP list ${interaction.member.displayName}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
+                    client.channels.cache.get(targetChannel).send(`You have been removed from the RSVP list ${interaction.member.displayName}.\nThis message will automatically delete.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
                     return interaction.deferUpdate();
                 }
             }
-            client.channels.cache.get(targetChannel).send(`You were not on the RSVP list ${interaction.member.displayName}.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
+            client.channels.cache.get(targetChannel).send(`You were not on the RSVP list ${interaction.member.displayName}.\nThis message will automatically delete.`).then(msg => { setTimeout(() => msg.delete(), 10000);});
             return interaction.deferUpdate();
         }
     }
@@ -118,7 +119,8 @@ const sendRSVPArray = new CronJob('1 15 * * 5', function() {
 const meetingStart = new CronJob('58 18 * * 5', function() {
     const mtgStartMsg = new MessageEmbed()
         .setColor('#0080ff')
-        .addFields({ name: 'Meeting starting now', value: 'Join general chat' })
+        .setTitle('Meeting starting now.')
+        .addFields({ name: '\u200B', value: 'Join General Voice Chat' })
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
         );
