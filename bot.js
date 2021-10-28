@@ -56,7 +56,7 @@ const dayBeforeReminder = new CronJob('1 12 * * 4', function() {
 
     const dayBeforeMsg = new MessageEmbed()
         .setColor('#0080ff')
-        .setTitle('Meeting this Friday at 7pm')
+        .setTitle('Club meeting this Friday at 7pm')
         .addFields({
             name: '\u200B',
             value: 'Click the accept button to RSVP to the meeting.\nClick the decline button to remove yourself from the RSVP list.',
@@ -119,7 +119,7 @@ const sendRSVPArray = new CronJob('1 15 * * 5', function() {
 const meetingStart = new CronJob('58 18 * * 5', function() {
     const mtgStartMsg = new MessageEmbed()
         .setColor('#0080ff')
-        .setTitle('Meeting starting now.')
+        .setTitle('Club meeting starting now.')
         .addFields({ name: '\u200B', value: 'Join General Voice Chat' })
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
