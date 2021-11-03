@@ -39,7 +39,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         }
     }
 
-    if (reaction.emoji.name === 'custom_crown' && reaction.count === 1) {
+    if (reaction.emoji.name === 'award' && reaction.message.author.id !== user.id) {
         const foundUser = await Users.findOne({ where: { username: reaction.message.author.username } });
 
         if (foundUser) {
