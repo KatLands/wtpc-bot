@@ -39,6 +39,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
         }
     }
 
+    if (!reaction.message.guild.me.permissionsIn(reaction.message.channel).has('SEND_MESSAGES')) return;
+
     if (reaction.emoji.name === 'award' && reaction.message.author.id !== user.id) {
         const foundUser = await Users.findOne({ where: { username: reaction.message.author.username } });
 
