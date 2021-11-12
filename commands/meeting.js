@@ -16,17 +16,22 @@ module.exports = {
         .addStringOption(option =>
             option.setName('topic')
                 .setDescription('Enter a meeting topic')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('description')
+                .setDescription('Enter a meeting meeting description')
                 .setRequired(true)),
 
     async execute(interaction) {
         const date = interaction.options.getString('date');
         const time = interaction.options.getString('time');
         const topic = interaction.options.getString('topic');
+        const description = interaction.options.getString('description');
 
         const specialtyMeetingSetUp = new MessageEmbed ()
             .setColor('#0080ff')
-            .setTitle('Thank you for setting up a meeting')
-            .setDescription(`**Date:** ${date}\n**Time:** ${time} \n**Topic:** ${topic}\n\nClick buttons below to add / remove yourself from RSVP list.`);
+            .setTitle(`${topic} Meeting`)
+            .setDescription(`**Date:** ${date}\n**Time:** ${time} \n**Description:** ${description}\n\nClick buttons below to add / remove yourself from RSVP list.`);
 
         const row = new MessageActionRow()
             .addComponents(
