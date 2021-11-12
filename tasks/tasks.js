@@ -9,7 +9,7 @@ Sec(0-59), min(0-59), hour(0-23), day of month(1-31), month(1-12), day of week(0
 
 
 // RSVP day before meeting message
-const dayBeforeReminder = (client) => new CronJob('* * * * *', function() {
+const dayBeforeReminder = (client) => new CronJob('1 12 * * 1', function() {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
