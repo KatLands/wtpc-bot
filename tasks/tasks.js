@@ -9,7 +9,7 @@ Sec(0-59), min(0-59), hour(0-23), day of month(1-31), month(1-12), day of week(0
 
 
 // RSVP day before meeting message
-const dayBeforeReminder = (client) => new CronJob('1 12 * * 1', function() {
+const dayBeforeReminder = (client) => new CronJob('* * * * *', function() {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
@@ -26,7 +26,7 @@ const dayBeforeReminder = (client) => new CronJob('1 12 * * 1', function() {
     const dayBeforeMsg = new MessageEmbed()
         .setColor('#0080ff')
         .setTitle('Club meeting this Tuesday at 6pm')
-        .setDescription('Click buttons below to add / remove yourself from RSVP list')
+        .setDescription('Click buttons below to add / remove yourself from RSVP list.')
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
         );
@@ -52,14 +52,7 @@ const meetingStart = (client) => new CronJob('58 17 * * 2', function() {
 });
 
 
-// Purging RSVP array
-const purgeRSVPList = (RSVPArray) => new CronJob('1 21 * * 2', function() {
-    RSVPArray.clear();
-    console.log(RSVPArray);
-});
-
 module.exports = {
     dayBeforeReminder,
     meetingStart,
-    purgeRSVPList,
 };

@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders'),
+    { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,8 +26,21 @@ module.exports = {
         const specialtyMeetingSetUp = new MessageEmbed ()
             .setColor('#0080ff')
             .setTitle('Thank you for setting up a meeting')
-            .setDescription(`Date: ${date}\nTime: ${time} \nTopic: ${topic}`);
-        await interaction.reply({ embeds: [specialtyMeetingSetUp] });
+            .setDescription(`**Date:** ${date}\n**Time:** ${time} \n**Topic:** ${topic}\n\nClick buttons below to add / remove yourself from RSVP list.`);
+
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('add')
+                    .setLabel('Add')
+                    .setStyle('SUCCESS'),
+                new MessageButton()
+                    .setCustomId('remove')
+                    .setLabel('Remove')
+                    .setStyle('DANGER'),
+            );
+
+        await interaction.reply({ embeds: [specialtyMeetingSetUp], components: [row] });
     },
 };
 
