@@ -4,7 +4,7 @@ module.exports = {
     async execute(interaction) {
         const { message, member } = interaction;
 
-        const originalDescription = message.embeds[0].description.split('.')[0] + '.';
+        const originalDescription = message.embeds[0].description.split('** **')[0] + '** **';
 
         const RSVPArray = message.embeds[0].description.split('- ').splice(1).map(item => item.trim()).filter(item => item !== member.displayName);
 

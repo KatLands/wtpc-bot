@@ -31,7 +31,7 @@ module.exports = {
         const specialtyMeetingSetUp = new MessageEmbed ()
             .setColor('#0080ff')
             .setTitle(`${topic} Meeting`)
-            .setDescription(`**Date:** ${date}\n**Time:** ${time} \n**Description:** ${description}\n\nClick buttons below to add / remove yourself from RSVP list.`);
+            .setDescription(`**Date:** ${date}\n**Time:** ${time} \n**Description:** ${description}** **`);
 
         const row = new MessageActionRow()
             .addComponents(

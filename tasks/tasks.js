@@ -26,7 +26,7 @@ const dayBeforeReminder = (client) => new CronJob('1 12 * * 1', function() {
     const dayBeforeMsg = new MessageEmbed()
         .setColor('#0080ff')
         .setTitle('Club meeting this Tuesday at 6pm')
-        .setDescription('Click buttons below to add / remove yourself from RSVP list.')
+        .setDescription('Click buttons below to add / remove yourself from RSVP list** **')
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
         );
