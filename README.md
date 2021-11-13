@@ -1,15 +1,27 @@
-## Wake Tech Programming Club Bot
+# Wake Tech Programming Club Bot
 
--Manages server for the club with scheduled reminder messages for meetings.
--Ability to get coding questions of varying difficulty via binarysearch.
+A custom Discord bot which manages several server affairs for the Wake Tech Programming Club such as scheduled reminder messages for meetings, ability to generate custom coding questions, awarding members for server contributions, as well as ability to schedule custom meetings.
 
-## Commands
+## Slash Commands
 
-- `/ping`: Confirms bot is up and running
-- `/server`: Responds with current server member count
-- `/question easy`: Returns question from binary search with easy difficulty
-- `/question medium`: Returns question from binary search with medium difficulty
-- `/question hard`: Returns question from binary search with hard difficulty
-- `/question harder`: Returns question from binary search with harder difficulty
-- `/leaderboard`: Shows top five server contributors
-- `/meeting`: Sets up a custom meeting using required fields date, time, topic, and description
+| Name               | Description                                                                       |
+| :----------------- | :-------------------------------------------------------------------------------- |
+| `/ping`            | Confirms bot is up and running                                                    |
+| `/server`          | Responds with current server member count                                         |
+| `/question easy`   | Returns question from binary search with easy difficulty                          |
+| `/question medium` | Returns question from binary search with medium difficulty                        |
+| `/question hard`   | Returns question from binary search with hard difficulty                          |
+| `/question harder` | Returns question from binary search with harder difficulty                        |
+| `/leaderboard`     | Shows top five server contributors                                                |
+| `/meeting`         | Sets up a custom meeting using required fields date, time, topic, and description |
+
+## Roadmap
+
+- Skip feature: will alow admin to call skip command and bypass cron jobs for a set amount of time.
+
+- Advising capability: users will be able to interact with the bot and get an outline of their course plan.
+
+## Authors
+
+- [@KatLands](https://github.com/KatLands)
+- [@aahmad4](https://github.com/aahmad4)
