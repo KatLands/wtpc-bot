@@ -11,3 +11,5 @@
 - `/question medium`: Returns question from binary search with medium difficulty
 - `/question hard`: Returns question from binary search with hard difficulty
 - `/question harder`: Returns question from binary search with harder difficulty
+- `/leaderboard`: Shows top five server contributors
+- `/meeting`: Sets up a custom meeting using required fields date, time, topic, and description
