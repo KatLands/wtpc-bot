@@ -1,12 +1,12 @@
-const { Client, Collection, Intents } = require('discord.js'),
+const { Client, Collection, Intents, MessageEmbed } = require('discord.js'),
     fs = require('fs'),
     Users = require('./models/users.js'),
-    { token } = require('./config.json'),
+    { token, targetChannel } = require('./config.json'),
     { dayBeforeReminder, meetingStart } = require('./tasks/tasks.js');
 
 
 const client = new Client({
-    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS],
     partials: ['MESSAGE', 'REACTION'],
 });
 
@@ -15,6 +15,22 @@ client.on('ready', () => {
     client.user.setActivity('WTPC');
     Users.sync();
 });
+
+client.on("guildMemberAdd", member => {
+    const dayBeforeMsg = new MessageEmbed()
+        .setColor('#0080ff') //This is just the Wake Tech Blue color on the side of the embed
+        .setTitle(`Welcome!`) //This will be the bold larger font title
+        .setDescription('•    No blank, inappropriate, offensive nicknames.\n•    No nicknames with unusual or unreadable Unicode.\n•    No inappropriate, offensive profile pictures.\n•    No inviting unofficial bots.\n•    No NSFW content.\n•    No illegal content.\n•    No copying and pasting homework or any other course assignments.\n•    Participation and/or facilitation of any activity that does not abide by the Wake Tech CC honor code system will result in a ban and a report to the advisors.') // You can use this or .addfield or .addfields
+        .setImage(
+            'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
+        ); // You can leave this or take it out. Just the wake tech logo.
+
+    // targetChannel is set in config.json but you can set it to whatever you want for testing.  
+    client.channels.cache.get(targetChannel,
+    ).send(member.toString());
+    client.channels.cache.get(targetChannel,
+    ).send({ embeds: [dayBeforeMsg] });
+})
 
 client.on('messageReactionAdd', async (reaction, user) => {
     if (user.bot) return;
