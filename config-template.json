@@ -2,5 +2,6 @@
   "clientId": "client ID(bot application ID)",
   "guildId": "guild ID here",
   "token": "bot token here",
-  "targetChannel": "target channel ID where scheduled messages deploy"
+  "targetChannel": "target channel ID where scheduled messages deploy",
+  "welcomeChannel": "welcome channel to send rules when someone joins server"
 }
