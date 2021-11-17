@@ -37,7 +37,7 @@ module.exports = {
             await Projects.create({ projectName, contactInfo, description });
 
             projectEmbed
-                .setTitle('Project successfully added:')
+                .setTitle('Project Successfully Added')
                 .setDescription(`**Project name:** ${projectName}\n**Contact information:** ${contactInfo} \n**Description:** ${description}** **`);
         }
         else {
