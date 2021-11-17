@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "nodemon bot.js"
+  },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
