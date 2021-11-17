@@ -7,7 +7,6 @@ Cron job format =  '* * * * * *'
 Sec(0-59), min(0-59), hour(0-23), day of month(1-31), month(1-12), day of week(0-6 starting with sunday)
 */
 
-
 // RSVP day before meeting message
 const dayBeforeReminder = (client) => new CronJob('1 12 * * 1', function() {
     const row = new MessageActionRow()
@@ -22,7 +21,6 @@ const dayBeforeReminder = (client) => new CronJob('1 12 * * 1', function() {
                 .setStyle('DANGER'),
         );
 
-
     const dayBeforeMsg = new MessageEmbed()
         .setColor('#0080ff')
         .setTitle('Club meeting this Tuesday at 6pm')
@@ -35,7 +33,6 @@ const dayBeforeReminder = (client) => new CronJob('1 12 * * 1', function() {
     ).send({ embeds: [dayBeforeMsg], components: [row] });
 
 });
-
 
 // Meeting start reminder
 const meetingStart = (client) => new CronJob('58 17 * * 2', function() {
@@ -50,7 +47,6 @@ const meetingStart = (client) => new CronJob('58 17 * * 2', function() {
     client.channels.cache.get(targetChannel,
     ).send({ embeds: [mtgStartMsg] });
 });
-
 
 module.exports = {
     dayBeforeReminder,

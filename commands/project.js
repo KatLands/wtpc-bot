@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders'),
-    { MessageEmbed } = require('discord.js');
+    { MessageEmbed } = require('discord.js'),
+    Projects = require('../models/projects.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -30,18 +31,30 @@ module.exports = {
         const description = interaction.options.getString('description');
         const subCommand = interaction.options.getSubcommand();
 
-        const addProject = new MessageEmbed()
-            .setColor('#0080ff')
-            .setTitle('Project successfully added:')
-            .setDescription(`**Project Name:** ${projectName}\n**Contact Information:** ${contactInfo} \n**Description:** ${description}** **`);
+        const projectEmbed = new MessageEmbed().setColor('#0080ff');
 
-        const viewProjects = new MessageEmbed ()
-            .setColor('#0080ff')
-            .setTitle('WTPC Active Projects')
-            .setDescription(`**Project Name:** ${projectName}\n**Contact Information:** ${contactInfo} \n**Description:** ${description}** **`);
+        if (subCommand === 'add') {
+            await Projects.create({ projectName, contactInfo, description });
 
-        await interaction.reply({ embeds: [subCommand === 'add' ? addProject : viewProjects] });
+            projectEmbed
+                .setTitle('Project Successfully Added')
+                .setDescription(`**Project name:** ${projectName}\n**Contact information:** ${contactInfo} \n**Description:** ${description}** **`);
+        }
+        else {
+            const projects = await Projects.findAll({ });
 
+            const projectsToDisplay = projects.map(project =>
+                '**Project name:** ' + project.dataValues.projectName + '\n' +
+                '**Contact information:** ' + project.dataValues.contactInfo + '\n' +
+                '**Description:** ' + project.dataValues.description + '\n\n',
+            );
+
+            projectEmbed
+                .setTitle('WTPC Active Projects')
+                .setDescription(projectsToDisplay.join(''));
+        }
+
+        await interaction.reply({ embeds: [projectEmbed] });
     },
 };
 
