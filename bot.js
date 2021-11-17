@@ -1,6 +1,7 @@
 const { Client, Collection, Intents, MessageEmbed } = require('discord.js'),
     fs = require('fs'),
     Users = require('./models/users.js'),
+    Projects = require('./models/projects.js'),
     { token, welcomeChannel } = require('./config.json'),
     { dayBeforeReminder, meetingStart } = require('./tasks/tasks.js');
 
@@ -12,7 +13,9 @@ const client = new Client({
 client.on('ready', () => {
     console.log(`Logged in: ${client.user.tag}`);
     client.user.setActivity('WTPC');
+
     Users.sync();
+    Projects.sync();
 });
 
 client.on('guildMemberAdd', member => {
