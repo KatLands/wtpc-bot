@@ -12,7 +12,7 @@ const client = new Client({
 
 client.on('ready', () => {
     console.log(`Logged in: ${client.user.tag}`);
-    client.user.setActivity('WTPC');
+    client.user.setPresence({ activities: [{ name: 'WTPC' }], status: 'dnd' });
 
     Users.sync();
     Projects.sync();
