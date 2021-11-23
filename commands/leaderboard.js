@@ -9,7 +9,7 @@ module.exports = {
 
     async execute(interaction) {
         const chartUrl = await getLeaderboardGraph();
-        const chartEmbed = new MessageEmbed().setImage(chartUrl);
+        const chartEmbed = new MessageEmbed().setDescription('Leaderboard Results').setImage(chartUrl);
 
         await interaction.reply({ embeds: [chartEmbed] });
     },

@@ -3,7 +3,7 @@ const { Client, Collection, Intents, MessageEmbed } = require('discord.js'),
     Users = require('./models/users.js'),
     Projects = require('./models/projects.js'),
     { token, welcomeChannel } = require('./config.json'),
-    { dayBeforeReminder, meetingStart } = require('./tasks/tasks.js');
+    { weeklyLeaderboardResults, dayBeforeReminder, meetingStart } = require('./tasks/tasks.js');
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS],
@@ -113,6 +113,7 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 // Start cron tasks
+weeklyLeaderboardResults(client).start();
 dayBeforeReminder(client).start();
 meetingStart(client).start();
 
