@@ -21,9 +21,6 @@ A custom Discord bot which manages several server affairs for the Wake Tech Prog
 
 - Advising capability: users will be able to interact with the bot and get an outline of their course plan.
 
-- Active projects command: displays all active club projects and team lead contact information.
-
-- Poll command: users will be able to set up a custom poll. 
 
 ## Authors
 
