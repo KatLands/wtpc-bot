@@ -15,7 +15,7 @@ const weeklyLeaderboardResults = (client) => new CronJob('0 11 * * 1', async fun
         const chartUrl = await getLeaderboardGraph();
 
         const users = await Users.findAll({ limit: 5, order: [['points', 'DESC']] });
-        const emojiSquare = '\u25FD';
+        const emojiSquare = ':white_small_square: ';
 
         let description = '';
 
