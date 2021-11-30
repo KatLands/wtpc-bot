@@ -13,8 +13,9 @@ A custom Discord bot which manages several server affairs for the Wake Tech Prog
 | `/question hard`   | Returns question from binary search with hard difficulty                          |
 | `/question harder` | Returns question from binary search with harder difficulty                        |
 | `/leaderboard`     | Shows top five server contributors                                                |
-| `/meeting`         | Sets up a custom meeting using required fields date, time, topic, and description
-| `/poll`            | Set up a custom poll with either yes/no options or any number of poll choices
+| `/meeting`         | Sets up a custom meeting using required fields date, time, topic, and description |
+| `/poll`            | Set up a custom poll with either yes/no options or any number of poll choices     |
+| `/project`         | Add, edit, and remove offical club projects                                       |
 
 ## Roadmap
 
