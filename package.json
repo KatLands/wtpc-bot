@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "node bot.js",
-    "dev": "nodemon bot.js"
+    "dev": "nodemon bot.js",
+    "commands": "node deploy-commands.js"
   },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
