@@ -3,7 +3,7 @@ const { Client, Collection, Intents, MessageEmbed } = require('discord.js'),
     Users = require('./models/users.js'),
     Projects = require('./models/projects.js'),
     { token, welcomeChannel } = require('./config.json'),
-    { weeklyLeaderboardResults, dayBeforeReminder, meetingStart } = require('./tasks/tasks.js');
+    { weeklyLeaderboardResults } = require('./tasks/tasks.js');
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS],
@@ -12,7 +12,7 @@ const client = new Client({
 
 client.on('ready', () => {
     console.log(`Logged in: ${client.user.tag}`);
-    client.user.setPresence({ activities: [{ name: 'WTPC' }], status: 'online' });
+    client.user.setPresence({ activities: [{ name: 'Use command /help for bot info' }], status: 'online' });
 
     Users.sync();
     Projects.sync();
@@ -114,7 +114,7 @@ client.on('interactionCreate', async (interaction) => {
 
 // Start cron tasks
 weeklyLeaderboardResults(client).start();
-dayBeforeReminder(client).start();
-meetingStart(client).start();
+// dayBeforeReminder(client).start();
+// meetingStart(client).start();
 
 client.login(token);
