@@ -21,8 +21,8 @@ client.on('ready', () => {
 client.on('guildMemberAdd', member => {
     const welcomeMessage = new MessageEmbed()
         .setColor('#0080ff')
-        .setTitle('Welcome!')
-        .setDescription('•    No blank, inappropriate, offensive nicknames.\n•    No nicknames with unusual or unreadable Unicode.\n•    No inappropriate, offensive profile pictures.\n•    No inviting unofficial bots.\n•    No NSFW content.\n•    No illegal content.\n•    No copying and pasting homework or any other course assignments.\n•    Participation and/or facilitation of any activity that does not abide by the Wake Tech CC honor code system will result in a ban and a report to the advisors.')
+        .setTitle('Welcome to the Wake Tech Programming Club!')
+        .setDescription('•    The announcements channel is where you will find important club updates.\n•    The club meets every other Tuesday at 6pm.\n•     Check out the Events tab on the top left for more information on club meetings.\n•    We have many help channels available based on language.\n•    Type /project in any channel to see more information about club projects.\n•    Type /help in any channel for more server information.\n•    We\'re glad to have you here! Please remember to fill out the forms mentioned in the welcome landing page.')
         .setImage(
             'https://www.waketech.edu/themes/custom/talon/assets/images/wake-tech-2017.png',
         );
