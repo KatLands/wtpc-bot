@@ -12,7 +12,7 @@ const client = new Client({
 
 client.on('ready', () => {
     console.log(`Logged in: ${client.user.tag}`);
-    client.user.setPresence({ activities: [{ name: 'Use command /help for bot info' }], status: 'online' });
+    client.user.setPresence({ activities: [{ name: 'Type /help in any channel for FAQ\'s' }], status: 'online' });
 
     Users.sync();
     Projects.sync();
