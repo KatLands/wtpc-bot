@@ -1,10 +1,9 @@
-const sequelize = require('../utilities/db');
-
 const { MessageEmbed } = require('discord.js'),
     CronJob = require('cron').CronJob,
     { targetChannel } = require('../config.json'),
     Users = require('../models/users.js'),
-    getLeaderboardGraph = require('../utilities/getLeaderboardGraph.js');
+    getLeaderboardGraph = require('../utilities/getLeaderboardGraph.js'),
+    sequelize = require('../utilities/db');
 
 /*
 Cron job format =  '* * * * * *'
