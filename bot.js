@@ -53,11 +53,11 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
         if (foundUser) {
             foundUser.increment('points', { by: 5 });
-            reaction.message.channel.send(`Congrats ${foundUser.username}, you just earned 5 points! (Total points: ${foundUser.points + 5})`);
+            reaction.message.channel.send(`Congrats <@${reaction.message.author.id}>, <@${user.id}> just awarded you 5 points! (Total points: ${foundUser.points + 5})`);
         }
         else {
             const newUser = await Users.create({ username: reaction.message.author.username });
-            reaction.message.channel.send(`Congrats ${newUser.username}, you just earned 5 points! (Total points: ${newUser.points})`);
+            reaction.message.channel.send(`Congrats <@${reaction.message.author.id}>,  <@${user.id}> just awarded you 5 points! (Total points: ${newUser.points})`);
         }
     }
 });
