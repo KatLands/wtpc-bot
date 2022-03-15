@@ -19,11 +19,7 @@ A custom Discord bot which manages several server affairs for the Wake Tech Prog
 
 ## Roadmap
 
-- Skip feature: will alow admin to call skip command and bypass cron jobs for a set amount of time.
-
-- Advising capability: users will be able to interact with the bot and get an outline of their course plan.
-
-- Feature request: allow users to request bot features using a command.
+- Server suggestions: allow users to request server changes via a bot command.
 
 - Club meeting topic request: users will be able to add suggested club meeting topics and would have the ability to remove/edit their reponses.
 
